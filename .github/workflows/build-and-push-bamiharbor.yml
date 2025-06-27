@@ -4,12 +4,10 @@ on:
   push:
     branches: [ "main" ]
 
-
 jobs:
   build-and-push:
     name: Build Docker Image and Push to BamiHarbor
-    run: |
-      docker build --add-host=bami.harbor.com:34.64.249.38 -t harbor.bami.com/myproject/myimage:${{ github.sha }} 
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -24,10 +22,11 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          IMAGE_TAG=harbor.registry.com/myproject/myimage:${{ github.sha }}
-          docker build -t $IMAGE_TAG .
+          IMAGE_TAG=harbor.bami.com/myproject/myimage:${{ github.sha }}
+          docker build --add-host=bami.harbor.com:34.64.249.38 -t $IMAGE_TAG .
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
- 
+
       - name: Push Docker Image to Harbor
         run: |
           docker push $IMAGE_TAG
+
