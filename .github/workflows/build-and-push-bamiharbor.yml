@@ -6,6 +6,11 @@ on:
 
 
 jobs:
+  build:
+    runs-on: self-hosted
+    container:
+      image: docker:latest
+      options: --add-host=bami.harbor.com:34.64.249.38
   build-and-push:
     name: Build Docker Image and Push to BamiHarbor
     runs-on: ubuntu-latest
@@ -19,7 +24,7 @@ jobs:
 
       - name: Log in to Harbor
         run: |
-          echo "${{ secrets.HARBOR_PASSWORD }}" | sudo docker login http://34.64.249.38 -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+          echo "${{ secrets.HARBOR_PASSWORD }}" | sudo docker login http://bami.harbor.com -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
 
       - name: Build Docker Image
         run: |
