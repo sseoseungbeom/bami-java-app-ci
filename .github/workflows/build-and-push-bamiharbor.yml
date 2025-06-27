@@ -9,9 +9,6 @@ jobs:
   build-and-push:
     name: Build Docker Image and Push to BamiHarbor
     runs-on: ubuntu-latest
-    container:
-      image: docker:latest
-      options: --network host --add-host=bami.harbor.com:34.64.249.38
 
     steps:
       - name: Checkout Repository
