@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: docker:latest
-      options: --add-host=bami.harbor.com:34.64.249.38
+      options: --network host --add-host=bami.harbor.com:34.64.249.38
 
     steps:
       - name: Checkout Repository
