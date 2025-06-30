@@ -14,29 +14,5 @@ jobs:
           echo "34.64.249.38 harbor.bamiland.shop" | sudo tee -a /etc/hosts
           ping -c 2 harbor.bamiland.shop || true
 
-      - name: Checkout Source Code
-        uses: actions/checkout@v4
-
-      - name: Check Docker access
-        run: |
-          whoami
-          groups
-          docker info
-
-      - name: Docker Login to Harbor
-        run: |
-          set -x
-          echo "${{ secrets.HARBOR_PASSWORD }}" | docker login https://harbor.bamiland.shop \
-            -u "${{ secrets.HARBOR_USERNAME }}" --password-stdin
-
-      - name: Build Docker Image
-        run: |
-          IMAGE_TAG=harbor.bamiland.shop/bami-ci-test/myapp:${{ github.sha }}
-          docker build -t $IMAGE_TAG .
-          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
-
-      - name: Push Docker Image to Harbor
-        run: |
-          docker push $IMAGE_TAG
 
 
