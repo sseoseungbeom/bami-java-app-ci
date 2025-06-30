@@ -2,39 +2,34 @@ name: Build and Push to Harbor
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
 
 jobs:
   build-and-push:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout Source Code
+      - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Debug Environment
+      - name: Show docker info and environment
         run: |
-          set -xe
           whoami
           groups
           docker info
 
-      - name: Docker Login to Harbor
+      - name: Login to Harbor registry
         run: |
-          set -xe
           echo "${{ secrets.HARBOR_PASSWORD }}" | docker login harbor.bamiland.shop \
             -u "${{ secrets.HARBOR_USERNAME }}" --password-stdin
 
-      - name: Build Docker Image
+      - name: Build Docker image
         run: |
-          set -xe
           IMAGE_TAG=harbor.bamiland.shop/bami-ci-test/myapp:${{ github.sha }}
           docker build -t $IMAGE_TAG .
-          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
-      - name: Push Docker Image to Harbor
+      - name: Push Docker image
         run: |
-          set -xe
           docker push $IMAGE_TAG
 
 
