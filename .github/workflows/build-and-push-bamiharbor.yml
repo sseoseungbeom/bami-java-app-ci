@@ -27,3 +27,12 @@ jobs:
 
       - name: Push Docker image to Harbor
         run: docker push $IMAGE_TAG
+        
+      - name: Print debug info
+        run: |
+          echo "USER: $(whoami)"
+          echo "HOSTNAME: $(hostname)"
+          echo "DATE: $(date)"
+          docker --version
+          docker info
+          cat /etc/hosts
