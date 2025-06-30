@@ -21,6 +21,6 @@ jobs:
 
       - name: Build and Push
         run: |
-          IMAGE_TAG=harbor.bami.shop/myproject/myimage:${{ github.sha }}
+          IMAGE_TAG=harbor.bami.shop/bami-ci-test/myimage:${{ github.sha }}
           docker build -t $IMAGE_TAG .
           docker push $IMAGE_TAG
