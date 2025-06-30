@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Check Docker access
+      - name: Debug Environment
         run: |
           whoami
           groups
@@ -20,16 +20,19 @@ jobs:
 
       - name: Docker Login to Harbor
         run: |
-          set -x
+          set -xe
           echo "${{ secrets.HARBOR_PASSWORD }}" | docker login https://harbor.bamiland.shop \
             -u "${{ secrets.HARBOR_USERNAME }}" --password-stdin
 
       - name: Build Docker Image
         run: |
+          set -xe
           IMAGE_TAG=harbor.bamiland.shop/bami-ci-test/myapp:${{ github.sha }}
           docker build -t $IMAGE_TAG .
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Push Docker Image to Harbor
         run: |
+          set -xe
           docker push $IMAGE_TAG
+
