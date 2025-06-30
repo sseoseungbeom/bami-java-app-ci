@@ -10,18 +10,18 @@ jobs:
 
     steps:
       - name: Add host entry
-        run: echo "34.64.249.38 harbor.bami.shop" | sudo tee -a /etc/hosts
+        run: echo "34.64.249.38 harbor.bamiland.shop" | sudo tee -a /etc/hosts
 
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Docker login to Harbor
         run: |
-          echo "${{ secrets.HARBOR_PASSWORD }}" | docker login http://harbor.bami.shop -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+          echo "${{ secrets.HARBOR_PASSWORD }}" | docker login http://harbor.bamiland.shop -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
 
       - name: Build and Push
         run: |
-          IMAGE_TAG=harbor.bami.shop/bami-ci-test/myimage:${{ github.sha }}
+          IMAGE_TAG=harbor.bamiland.shop/bami-ci-test/myimage:${{ github.sha }}
           docker build -t $IMAGE_TAG .
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
