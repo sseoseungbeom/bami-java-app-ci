@@ -23,4 +23,7 @@ jobs:
         run: |
           IMAGE_TAG=harbor.bami.shop/bami-ci-test/myimage:${{ github.sha }}
           docker build -t $IMAGE_TAG .
-          docker push $IMAGE_TAG
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+
+      - name: Push Docker image to Harbor
+        run: docker push $IMAGE_TAG
