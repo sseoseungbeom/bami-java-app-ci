@@ -42,7 +42,6 @@ jobs:
           
       - name: Push Docker Image to Harbor
         run: |
-          docker push $IMAGE_TAG
-
+          docker push harbor.bamiland.shop/myproject/myimage:${{ env.TAG_NAME }}
 
 
