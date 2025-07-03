@@ -5,7 +5,6 @@ on:
     tags:
       - 'v*'
 
-
 jobs:
   build-and-push:
     runs-on: self-hosted
@@ -28,10 +27,17 @@ jobs:
       - name: Build JAR
         run: ./gradlew clean build
 
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v2
+        with:
+          host-url: ${{ secrets.SONAR_HOST_URL }}
+          token: ${{ secrets.SONAR_TOKEN }}
+
       - name: Docker Login to Harbor
         run: |
           echo "${{ secrets.HARBOR_PASSWORD }}" | docker login harbor.bamiland.shop \
             -u "${{ secrets.HARBOR_USERNAME }}" --password-stdin
+
       - name: Set Docker Tag Name
         id: tag
         run: |
@@ -42,6 +48,7 @@ jobs:
           fi
           echo "IMAGE_TAG=harbor.bamiland.shop/bami-ci-test/myapp:$TAG" >> $GITHUB_ENV
           echo "Tag will be: $TAG"
+
       - name: Build Docker Image
         run: docker build -t $IMAGE_TAG .
 
