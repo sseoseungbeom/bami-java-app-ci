@@ -27,11 +27,16 @@ jobs:
       - name: Build JAR
         run: ./gradlew clean build
 
+      # SonarQube 분석 단계 추가
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v2
-        with:
-          host-url: ${{ secrets.SONAR_HOST_URL }}
-          token: ${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          ./gradlew sonarqube \
+            -Dsonar.projectKey=bami-java-app-ci \
+            -Dsonar.host.url=$SONAR_HOST_URL \
+            -Dsonar.login=$SONAR_TOKEN
 
       - name: Docker Login to Harbor
         run: |
@@ -54,6 +59,7 @@ jobs:
 
       - name: Push Docker Image to Harbor
         run: docker push $IMAGE_TAG
+
 
 
 
