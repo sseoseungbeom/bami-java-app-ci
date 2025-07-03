@@ -29,10 +29,8 @@ tasks.named('test') {
 }
 
 sonarqube {
-  properties {
-    property "sonarqube.projectKey", "sseoseungbeom_bami-java-app-ci_75a85124-25f6-452c-81b2-725bd3f7db5c"
-    property "sonarqube.projectName", "bami-java-app-ci"
-  }
+  property "sonar.projectKey", "sseoseungbeom_bami-java-app-ci_75a85124-25f6-452c-81b2-725bd3f7db5c"
+  property "sonar.projectName", "bami-java-app-ci"
 }                      
 
 
