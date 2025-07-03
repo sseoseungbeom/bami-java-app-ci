@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.3'
 	id 'io.spring.dependency-management' version '1.1.7'
+        id "org.sonarqube" version "6.2.0.5505"
 }
 
 group = 'one.bami'
@@ -26,3 +27,11 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+sonar {
+  properties {
+    property "sonar.projectKey", "sseoseungbeom_bami-java-app-ci_75a85124-25f6-452c-81b2-725bd3f7db5c"
+    property "sonar.projectName", "bami-java-app-ci"
+  }
+}                                                        
+~                                                      
