@@ -1,0 +1,49 @@
+name: Build and Push to Harbor
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+
+jobs:
+  build-and-push:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 태그 정보 포함
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build JAR
+        run: ./gradlew clean build
+
+      - name: Docker Login to Harbor
+        run: |
+          echo "${{ secrets.HARBOR_PASSWORD }}" | docker login harbor.bamiland.shop \
+            -u "${{ secrets.HARBOR_USERNAME }}" --password-stdin
+      - name: Set Docker Tag Name
+        id: tag
+        run: |
+          if [[ "${GITHUB_REF}" == refs/heads/* ]]; then
+            TAG="main"
+          else
+            TAG="${GITHUB_REF##*/}"
+          fi
+          echo "IMAGE_TAG=harbor.bamiland.shop/bami-ci-test/acorn:$TAG" >> $GITHUB_ENV
+          echo "Tag will be: $TAG"
+      - name: Build Docker Image
+        run: docker build -t $IMAGE_TAG .
+
+      - name: Push Docker Image to Harbor
+        run: docker push $IMAGE_TAG
