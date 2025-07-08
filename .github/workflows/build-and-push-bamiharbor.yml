@@ -2,7 +2,7 @@ name: Build and Push to Harbor
 
 on:
   push:
-    tags:
+    tags-ignore:
       - 'v*'
 
 jobs:
