@@ -9,7 +9,7 @@ public class VulnerableExample {
         String userInput = "'; DROP TABLE users; --"; // SQL Injection
 
         // ☠ 하드코딩된 비밀번호
-        String password = "pw123456789";
+        String password = "pw12345";
 
         try {
             // ☠ 하드코딩된 DB URL
